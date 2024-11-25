@@ -58,6 +58,7 @@ async function fetchExchangeRate() {
       p_input.textContent = `1 ${currency1} = ${rate.toFixed(5)} ${currency2}`;
       p_output.textContent = `1 ${currency2} = ${reverseRate.toFixed(5)} ${currency1}`;
       alertBox.textContent = "";
+      
     } else {
       throw new Error("Exchange rate unavailable");
     }
