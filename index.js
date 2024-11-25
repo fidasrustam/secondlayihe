@@ -7,8 +7,8 @@ const p_input = document.querySelector(".p_input");
 const p_output = document.querySelector(".p_output");
 let currency1 = "RUB";
 let currency2 = "USD";
-const apiKey = "eb86bb9f5695d9e7acc6a722";
-const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/`;
+const apiKey = "336818d1460e9225f4cf7aba2372064a";
+const apiUrl = `http://data.fixer.io/api/latest?access_key=${apiKey}`;
 currencyGroup1.addEventListener("click", async (e) => {
   if (e.target.tagName === "BUTTON") {
     currency1 = e.target.getAttribute("data-currency");
@@ -40,7 +40,7 @@ async function getExchangeRate(fromCurrency, toCurrency) {
     return data.conversion_rates[toCurrency];
   } catch (error) {
     console.error("Ошибка в запросе API:", error);
-    alertBox.textContent = "Проблема с сетью. Пожалуйста, проверьте подключение к Интернету.";
+    alertBox.textContent = "Не удалось загрузить информацию о тарифах. Пожалуйста, попробуйте еще раз.";
     return null;
   }
 }
@@ -57,7 +57,7 @@ async function fetchExchangeRate() {
       throw new Error("Exchange rate unavailable");
     }
   } catch (error) {
-    alertBox.textContent = "Не удалось загрузить информацию о тарифах. Пожалуйста, попробуйте еще раз.";
+    alertBox.textContent = "Проблема с сетью. Пожалуйста, проверьте подключение к Интернету.";
     console.error("Ошибка оценки:", error);
   }
 }
