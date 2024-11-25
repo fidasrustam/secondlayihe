@@ -8,7 +8,8 @@ const p_output = document.querySelector(".p_output");
 let currency1 = "RUB";
 let currency2 = "USD";
 const apiKey = "336818d1460e9225f4cf7aba2372064a";
-const apiUrl = `http://data.fixer.io/api/latest?access_key=${apiKey}`;
+const apiUrl = `https://api.exchangerate-api.com/v4/latest/${currency1}`;  // Yeni API istifadə
+
 currencyGroup1.addEventListener("click", async (e) => {
   if (e.target.tagName === "BUTTON") {
     currency1 = e.target.getAttribute("data-currency");
@@ -18,6 +19,7 @@ currencyGroup1.addEventListener("click", async (e) => {
     convertInputs(); 
   }
 });
+
 currencyGroup2.addEventListener("click", async (e) => {
   if (e.target.tagName === "BUTTON") {
     currency2 = e.target.getAttribute("data-currency");
@@ -27,23 +29,26 @@ currencyGroup2.addEventListener("click", async (e) => {
     convertInputs(); 
   }
 });
+
 function updateActiveButton(group, activeButton) {
   Array.from(group.children).forEach((button) => {
     button.classList.remove("active");
   });
   activeButton.classList.add("active");
 }
+
 async function getExchangeRate(fromCurrency, toCurrency) {
   try {
-    const response = await fetch(`${apiUrl}${fromCurrency}`);
+    const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
     const data = await response.json();
-    return data.conversion_rates[toCurrency];
+    return data.rates[toCurrency];
   } catch (error) {
-    console.error("Ошибка в запросе API:", error);
-    alertBox.textContent = "Не удалось загрузить информацию о тарифах. Пожалуйста, попробуйте еще раз.";
+    console.error("API request error:", error);
+    alertBox.textContent = "Не удалось загрузить информацию о тарифах. Пожалуйста, попробуйте еще раз..";
     return null;
   }
 }
+
 async function fetchExchangeRate() {
   try {
     const rate = await getExchangeRate(currency1, currency2);
@@ -58,9 +63,10 @@ async function fetchExchangeRate() {
     }
   } catch (error) {
     alertBox.textContent = "Проблема с сетью. Пожалуйста, проверьте подключение к Интернету.";
-    console.error("Ошибка оценки:", error);
+    console.error("Rate fetching error:", error);
   }
 }
+
 async function convertInputs() {
   const rate = await getExchangeRate(currency1, currency2);
   const reverseRate = await getExchangeRate(currency2, currency1);
@@ -75,6 +81,7 @@ async function convertInputs() {
     }
   }
 }
+
 document.addEventListener("DOMContentLoaded", async () => {
   input1.value = localStorage.getItem("input1") || "";
   input2.value = localStorage.getItem("input2") || "";
@@ -85,6 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await fetchExchangeRate();
   convertInputs(); 
 });
+
 function setActiveCurrency(group, currency) {
   Array.from(group.children).forEach((button) => {
     if (button.getAttribute("data-currency") === currency) {
@@ -94,6 +102,7 @@ function setActiveCurrency(group, currency) {
     }
   });
 }
+
 input1.addEventListener("input", async () => {
   const rate = await getExchangeRate(currency1, currency2);
   if (input1.value) {
@@ -102,7 +111,10 @@ input1.addEventListener("input", async () => {
   } else {
     input2.value = "";
   }
+
+  localStorage.setItem("input1", input1.value);
 });
+
 input2.addEventListener("input", async () => {
   const reverseRate = await getExchangeRate(currency2, currency1);
   if (input2.value) {
@@ -111,23 +123,27 @@ input2.addEventListener("input", async () => {
   } else {
     input1.value = "";
   }
+
+  localStorage.setItem("input2", input2.value);
 });
+
 input1.addEventListener("input", () => {
   input1.value = input1.value.replace(/[^0-9.]/g, "").replace(/\.+/, ".");
   if (input1.value.length > 24) {
     input1.value = input1.value.slice(0, 24);
   }
-  fetchExchangeRate();
 });
+
 input2.addEventListener("input", () => {
   input2.value = input2.value.replace(/[^0-9.]/g, "").replace(/\.+/, ".");
   if (input2.value.length > 24) {
-    input2.value = input1.value.slice(0, 24);
+    input2.value = input2.value.slice(0, 24);
   }
-  fetchExchangeRate();
 });
+
 function toggleMenu() {
   const menu = document.getElementById("navbarMenu");
   menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
+
 document.addEventListener("DOMContentLoaded", fetchExchangeRate);
