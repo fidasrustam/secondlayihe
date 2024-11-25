@@ -1,241 +1,258 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+*{margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.header {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.convertor {
+  width: 70%;
+  margin: 100px auto;
+}
+.container1,
+.container2 {
+  width: 100%;
+}
+.container1,
+.container2 p{
+  font-family: Roboto, sans-serif;
+  color: #9f9f9f;
+}
+
+.convertor h1 {
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 18px;
+  margin-bottom: 30px;
+}
+
+#currencyGroup1 {
+  margin-top: 10px;
+  margin-bottom: 50px;
+  display: flex;
+  width: 100%;
+  height: 30px;
+}
+
+#currencyGroup2 {
+  margin-top: 10px;
+  margin-bottom: 50px;
+  display: flex;
+  width: 100%;
+  height: 30px;
+}
+
+.button-group button {
+  border: 1px solid #e5e5e5;
+  color: #c6c6c6;
+  background-color: white;
+  height: 30px;
+  width: 25%;
+}
+
+.valyuta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border: 1px solid #e5e5e5;
+  width: 100%;
+  height: 100px;
+  padding: 0 10px;
+}
+
+.valyuta input {
+  border: none;
+  outline: none;
+  width: 200px;
+  height: 40px;
+  color: black;
+  font-weight: 700;
+  font-size: 36px;
+}
+
+.valyuta p {
+  color: #c4c4c4c4;
+  width: 150px;
+  height: 30px;
+  font-size: 14px;
+  margin: 0;
+}
+
+.active {
+  background-color: #833ae0 !important;
+  color: white !important;
+}
+
+.alert {
+  color: red;
+  width: 500px;
+  margin: 0 auto;
+  font-size: 45px;
+  font-weight: 900;
+}
+
+.headerNav {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: rgba(245, 245, 246, 1);
+  border-bottom: 1px solid #ddd;
+  position: relative;
+  text-transform: uppercase;
+  font-family: Roboto, sans-serif;
+}
+
+.navbarLogo h1 {
+  font-size: 24px;
+  margin: 0;
+  color: #333;
+}
+
+.navbarUl {
+  list-style: none;
+  display: flex;
+  gap: 77px;
+  padding: 0;
+  margin: 0;
+}
+
+.navbarUl li {
+  font-size: 16px;
+  color: #9f9f9f;
+  cursor: pointer;
+}
+
+.navbarUl li:hover {
+  color: #000000;
+}
+
+.navbarButton {
+  background-color: white;
+  color: black;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.navbarButton:hover {
+  background-color: #9cb4cc;
+}
+
+
+.hamburger {
+  font-size: 24px;
+  cursor: pointer;
+  margin: 10px;
+  display: none;
+}
+
+
+@media (max-width: 1200px) {
+  .headerNav {
+    flex-wrap: wrap;
+  }
+  .navbarUl li {
+    font-size: 14px;
+  }
+  .convertor h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbarMenu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #f8f8f8;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
   }
   .container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .line {
-    width: 100%;
-    height: 28px;
-    background-color: #ffdc40;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-  }
-  .to-do-list {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
-    width: 336px; 
-    height: auto; 
-    border: 1px solid #c4c4c4;
-    border-radius: 8px;
   }
-  .to-do-list h1 {
+  .navbarUl {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbarButton {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .convertor {
+    margin-top: 50px;
+  }
+}
+@media (max-width: 320px) {
+  .navbarLogo h1 {
+    font-size: 20px;
+  }
+
+  .header h1 {
+    font-size: 24px;
     text-align: center;
   }
-  .sort {
-    width: 30px;
-    align-self: flex-end;
-    cursor: pointer;
-  }
-  .add-to-do {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 20px;
-  }
-  .todos ul {
-    padding: 0;
-    list-style: none;
-    margin: 0;
-    width: 100%;
-  }
-  .new-todos{
-    max-height: 200px;  
-    overflow-y: scroll; 
-    overflow-x: hidden;
-    width: 100%;
-    border: 1px solid #c4c4c4;
-    border-radius: 10px;
-    padding-right: 10px;
 
+  .hamburger {
+    display: block;
   }
-  .todos li {
-    word-wrap: break-word; 
-    word-break: break-all;
-    border-bottom: auto;
+
+  .header {
     padding: 10px;
-    font-size: 18px;
-    background-color: white;
-    border-radius: 25px;
-    margin-bottom: 3px;
-  }
-
-  .input {
-    position: relative;
-  }
-  .input input {
-    padding-right: 45px;
-    padding-left: 5px;
-    width: 100%;
-    height: 40px;
-    border-radius: 10px;
-    border: 1px solid #c4c4c4;  
-    /* padding: 10px 20px; */
-    font-size: 18px;
-    overflow-wrap: break-word;
-    outline: none;  
-    margin-bottom: 5px;
-  }
-  .input input:focus {
-    border: 1px solid #c4c4c4; 
-  }
-  form {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .add-button {
-    position: relative;
-    align-self: center;
-    width: 60%;
-  }
-  .plus {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
-    border: none;
-    background-color: #9953f1;
-    font-size: 20px;
-  }
-  .plus:hover {
-    background-color: #a46de8;
-    transition: 0.5s;
-  }
-  .add-button .button {
-    width: 100%;
-    height: 40px;
-    background-color: #833ae0;
-    border: none;
-    color: white;
-    font-size: 20px;
-    border-radius: 23px;
-    padding: 10px 30px 10px 20px;
-    margin: auto;
-  }
-  .add-button .button:hover {
-    background-color: #8851cf;
-    transition: 0.5s;
-  }
-  .sort:hover > rect,
-  .sort:hover > path {
-    transition: 0.5s;
-    fill: black;
-  } 
-
-  .todos::-webkit-scrollbar {
-    width: 10px; 
-    background-color: rgba(0, 0, 0, 0); 
-  }
-  .todos::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0); 
-    border-radius: 10px; 
-  }
-  ul li {
-    max-height: 100px;
-    padding: 5px 20px;
-    list-style: none;
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    font-size: 18px;
-  }
-  .delete-todo {
-    min-width: 20px;
-    min-height: 20px;
-    align-self: center;
-    top: 10px;
-    right: 20px;
-    background-color: white;  
-    color: #c4c4c4;
-    border: none;
-    border: 1px solid #c4c4c4;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin-left: 1px; 
-}
-.delete-todo:hover {
-    transition: 0.5s;
-    background-color: #833ae0;
-    border: 1px solid #833ae0;
-    color: white;
-}
-.delete-todo:focus {
-    outline: none; 
-}
-.delete {
-    min-width: 20px;
-    min-height: 20px;
-    position: absolute;
-    align-self: center;
-    top:10px;
-    right: 20px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    color: #c4c4c4;
-    border: 1px solid #c4c4c4;
-    background-color: white;
   }
-  .delete:hover {
-    transition: 0.5s;
-    background-color: #833ae0;
-    border: 1px solid #833ae0;
-    color: white;
+
+  .convertor {
+    width: 90%;
+    margin: 20px auto;
+    text-align: center;
   }
-  .delete-todo {
-    border-radius: 100%;
-  }
-  .error {
-    color: red;
+
+  .navbarUl li {
     font-size: 14px;
-    margin-top: 5px;
   }
-  @media (max-width:299px) {
-    .to-do-list {
-      width: 100%;
-      height: auto;
-      padding: 10px;
-    }
-    .input input {
-      font-size: 14px;
-      height: 35px;
-    }
-    .add-button .button {
-      font-size: 14px;
-      padding: 10px 20px;
-    }
-    ul li {
-      font-size: 16px;
-      padding: 5px;
-    }
-    .plus {
-      width: 35px;
-      height: 35px;
-      font-size: 16px;
-    }
-    .container {
-      width: 100%;
-      height: auto;
-      padding: 10px;
-    }
+
+  .navbarButton {
+    font-size: 14px;
+    padding: 6px 12px;
+    display: none;
   }
+
+  .valyuta input {
+    font-size: 18px;
+    max-width: 100%;
+  }
+
+  .headerNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+}

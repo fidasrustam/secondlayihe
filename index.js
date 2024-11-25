@@ -1,210 +1,133 @@
-let sortIcon = document.querySelectorAll(".sort");
-let deleteIcon = document.querySelector(".delete");
-let todos = document.querySelector(".todos");
-let plusIcon = document.querySelector(".plus");
-let inputContainer = document.querySelector(".input");
-let sortDownIcon = document.querySelector(".sort-down");
-let sortUpIcon = document.querySelector(".sort-up");
-let error = document.querySelector(".error");
-sortUpIcon.style.display = "none";
-let addButton = document.querySelector(".button");
-addButton.disabled = false;
-addButton.addEventListener('click', () =>{
-    todos.classList.add("new-todos");
-})
-
-deleteIcon.addEventListener("click", () => {
-  inputContainer.style.display = "none";
-  addButton.disabled = true;
-  if (todoss.length > 0) {
-    todos.style.display = "block";
+const input1 = document.getElementById("input1");
+const input2 = document.getElementById("input2");
+const currencyGroup1 = document.getElementById("currencyGroup1");
+const currencyGroup2 = document.getElementById("currencyGroup2");
+const alertBox = document.querySelector(".alert");
+const p_input = document.querySelector(".p_input");
+const p_output = document.querySelector(".p_output");
+let currency1 = "RUB";
+let currency2 = "USD";
+const apiKey = "eb86bb9f5695d9e7acc6a722";
+const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/`;
+currencyGroup1.addEventListener("click", async (e) => {
+  if (e.target.tagName === "BUTTON") {
+    currency1 = e.target.getAttribute("data-currency");
+    updateActiveButton(currencyGroup1, e.target);
+    localStorage.setItem("currency1", currency1);
+    await fetchExchangeRate();
+    convertInputs(); 
   }
-  inputContainer.style.display = "block";
-  todos.innerHTML = ""; 
-  this.displayTodos();  
 });
-
-plusIcon.addEventListener("click", (e) => {
-  inputContainer.style.display = "block";
-  todos.style.display = "none";
-  addButton.disabled = false;
-  e.preventDefault();
+currencyGroup2.addEventListener("click", async (e) => {
+  if (e.target.tagName === "BUTTON") {
+    currency2 = e.target.getAttribute("data-currency");
+    updateActiveButton(currencyGroup2, e.target);
+    localStorage.setItem("currency2", currency2);
+    await fetchExchangeRate();
+    convertInputs(); 
+  }
 });
-
-let todoss = [];
-
-class Todo {
-  constructor(name, id) {
-    this.name = name;
-    this.id = id;
-  }
-}
-
-class List {     
-  constructor() {
-    this.input = document.querySelector("input");
-    this.btn = document.querySelector(".button");
-    this.sorted = true;
-    this.editingId = null;
-
-    this.input.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        this.addTodo();
-      }
-    });
-
-    this.btn.addEventListener("click", (e) => {
-      this.addTodo();
-      e.preventDefault();
-    });
-  }
-
-  addTodo = () => {
-    let todoText = this.input.value.trim();
-    if (todoText) {
-      if (this.editingId) {
-        let todo = todoss.find((todo) => todo.id === this.editingId);
-        todo.name = todoText;
-        this.editingId = null;
-      } else {
-        let newTodo = new Todo(todoText, Date.now());
-        todoss.push(newTodo);
-      }
-  
-      this.displayTodos();
-      inputContainer.style.display = "none";
-      todos.style.display = "block";
-      addButton.disabled = true;
-  
-      error.textContent = ""; 
-    } 
-    else {
-      error.textContent = "Please add a todo item"; 
-    }
-    this.input.value = "";
-  };
-
-  displayTodos = () => {
-    todos.innerHTML = "";
-    let ul = document.createElement("ul");
-    if (todoss.length === 0) {
-      todos.style.display = "none";
-      this.sorted = true;
-      sortDownIcon.style.display = "block";
-      sortUpIcon.style.display = "none";
-    } else {
-      todos.style.display = "block";
-      todoss.forEach((todo, index) => {
-let li = document.createElement("li");
-let span = document.createElement("span");
-let deleteButton = document.createElement("button"); 
-
-
-span.textContent = `${index + 1}. ${todo.name}`;
-
-deleteButton.classList.add("delete-todo");
-deleteButton.textContent = "X";  
-deleteButton.addEventListener("click", () => this.deleteTodo(todo.id));
-
-li.draggable = true;
-li.dataset.index = index;
-li.addEventListener("dragstart", this.handleDragStart);
-li.addEventListener("dragover", this.handleDragOver);
-li.addEventListener("drop", this.handleDrop);
-li.addEventListener("dragend", this.handleDragEnd);
-
-li.addEventListener("dblclick", () => this.editTodo(todo.id));
-
-li.appendChild(span);
-li.appendChild(deleteButton);  
-ul.appendChild(li);
-
-
-      });
-      todos.appendChild(ul);
-    }
-  };
-
-
-  deleteTodo = (id) => {
-    todoss = todoss.filter((todo) => todo.id !== id); 
-    this.updateIndexes(); 
-    this.displayTodos();
-
-    if (todoss.length === 0) {
-        inputContainer.style.display = "block"; 
-        todos.style.display = "none";
-        addButton.disabled = false; 
-    }
-};
-
-updateIndexes = () => {
-    todoss = todoss.map((todo, index) => {
-      todo.index = index + 1; 
-      return todo;
-    });
-};
-
-  sortTodo = () => {
-    if (todoss.length > 1) {
-      todoss.sort((a, b) => {
-        const isANumber = !isNaN(a.name);
-        const isBNumber = !isNaN(b.name);
-
-        if (isANumber && isBNumber) {
-          return this.sorted ? a.name - b.name : b.name - a.name;
-        } else if (!isANumber && !isBNumber) {
-          return this.sorted
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name);
-        } else {
-          return isANumber ? -1 : 1;
-        }
-      });
-
-      this.sorted = !this.sorted;
-      let sortdowndisplay = getComputedStyle(sortDownIcon).display;
-      let sortupdisplay = getComputedStyle(sortUpIcon).display;
-      sortDownIcon.style.display =
-        sortdowndisplay === "none" ? "block" : "none";
-      sortUpIcon.style.display = sortupdisplay === "block" ? "none" : "block";
-      this.displayTodos();
-    }
-  };
-
-  handleDragStart = (e) => {
-    e.dataTransfer.setData("text/plain", e.target.dataset.index);
-    e.target.style.opacity = "0.5";
-  };
-  handleDragOver = (e) => {
-    e.preventDefault();
-    e.target.style.border = "1px dashed #FFDC40";
-  };
-  handleDrop = (e) => {
-    e.preventDefault();
-    e.target.style.border = "";
-    const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"), 10);
-    const targetIndex = parseInt(e.target.dataset.index, 10);
-    if (draggedIndex !== targetIndex) {
-        [todoss[draggedIndex], todoss[targetIndex]] = [
-            todoss[targetIndex],
-            todoss[draggedIndex],
-        ];
-        this.displayTodos();
-    }
-};
-  handleDragEnd = (e) => {
-    e.target.style.opacity = "1";
-    const items = todos.querySelectorAll("li");
-    items.forEach((item) => (item.style.border = ""));
-  };
-}
-
-let todo = new List();
-sortIcon.forEach((item) => {
-  item.addEventListener("click", (e) => {
-    e.preventDefault();
-    todo.sortTodo();
+function updateActiveButton(group, activeButton) {
+  Array.from(group.children).forEach((button) => {
+    button.classList.remove("active");
   });
+  activeButton.classList.add("active");
+}
+async function getExchangeRate(fromCurrency, toCurrency) {
+  try {
+    const response = await fetch(`${apiUrl}${fromCurrency}`);
+    const data = await response.json();
+    return data.conversion_rates[toCurrency];
+  } catch (error) {
+    console.error("Ошибка в запросе API:", error);
+    alertBox.textContent = "Проблема с сетью. Пожалуйста, проверьте подключение к Интернету.";
+    return null;
+  }
+}
+async function fetchExchangeRate() {
+  try {
+    const rate = await getExchangeRate(currency1, currency2);
+    const reverseRate = await getExchangeRate(currency2, currency1);
+
+    if (rate && reverseRate) {
+      p_input.textContent = `1 ${currency1} = ${rate.toFixed(5)} ${currency2}`;
+      p_output.textContent = `1 ${currency2} = ${reverseRate.toFixed(5)} ${currency1}`;
+      alertBox.textContent = "";
+    } else {
+      throw new Error("Exchange rate unavailable");
+    }
+  } catch (error) {
+    alertBox.textContent = "Не удалось загрузить информацию о тарифах. Пожалуйста, попробуйте еще раз.";
+    console.error("Ошибка оценки:", error);
+  }
+}
+async function convertInputs() {
+  const rate = await getExchangeRate(currency1, currency2);
+  const reverseRate = await getExchangeRate(currency2, currency1);
+
+  if (rate && reverseRate) {
+    if (input1.value) {
+      const amountFrom = parseFloat(input1.value) || 0;
+      input2.value = (amountFrom * rate).toFixed(5);
+    } else if (input2.value) {
+      const amountTo = parseFloat(input2.value) || 0;
+      input1.value = (amountTo * reverseRate).toFixed(5);
+    }
+  }
+}
+document.addEventListener("DOMContentLoaded", async () => {
+  input1.value = localStorage.getItem("input1") || "";
+  input2.value = localStorage.getItem("input2") || "";
+  currency1 = localStorage.getItem("currency1") || "RUB";
+  currency2 = localStorage.getItem("currency2") || "USD";
+  setActiveCurrency(currencyGroup1, currency1);
+  setActiveCurrency(currencyGroup2, currency2);
+  await fetchExchangeRate();
+  convertInputs(); 
 });
+function setActiveCurrency(group, currency) {
+  Array.from(group.children).forEach((button) => {
+    if (button.getAttribute("data-currency") === currency) {
+      button.classList.add("active");
+    } else {
+      button.classList.remove("active");
+    }
+  });
+}
+input1.addEventListener("input", async () => {
+  const rate = await getExchangeRate(currency1, currency2);
+  if (input1.value) {
+    const amountFrom = parseFloat(input1.value) || 0;
+    input2.value = (amountFrom * rate).toFixed(5);
+  } else {
+    input2.value = "";
+  }
+});
+input2.addEventListener("input", async () => {
+  const reverseRate = await getExchangeRate(currency2, currency1);
+  if (input2.value) {
+    const amountTo = parseFloat(input2.value) || 0;
+    input1.value = (amountTo * reverseRate).toFixed(5);
+  } else {
+    input1.value = "";
+  }
+});
+input1.addEventListener("input", () => {
+  input1.value = input1.value.replace(/[^0-9.]/g, "").replace(/\.+/, ".");
+  if (input1.value.length > 24) {
+    input1.value = input1.value.slice(0, 24);
+  }
+  fetchExchangeRate();
+});
+input2.addEventListener("input", () => {
+  input2.value = input2.value.replace(/[^0-9.]/g, "").replace(/\.+/, ".");
+  if (input2.value.length > 24) {
+    input2.value = input1.value.slice(0, 24);
+  }
+  fetchExchangeRate();
+});
+function toggleMenu() {
+  const menu = document.getElementById("navbarMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+document.addEventListener("DOMContentLoaded", fetchExchangeRate);
